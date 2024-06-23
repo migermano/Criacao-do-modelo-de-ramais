@@ -1,0 +1,44 @@
+CREATE TABLE ANDARES (
+    AndarID INT NOT NULL IDENTITY,
+    Nome VARCHAR(255) NOT NULL,
+    CONSTRAINT PK_Andar PRIMARY KEY (AndarID)
+);
+ 
+CREATE TABLE TELEFONE (
+    TelefoneID INT NOT NULL IDENTITY,
+    Telefone_Numero VARCHAR(255),
+    CONSTRAINT PK_Telefone PRIMARY KEY (TelefoneID)
+);
+ 
+CREATE TABLE RAMAL (
+    RamalID INT NOT NULL IDENTITY,
+    Ramal_Numero VARCHAR(255), 
+    Ramal_HomeOffice VARCHAR(255), 
+    CONSTRAINT PK_Ramal PRIMARY KEY (RamalID)
+);
+ 
+CREATE TABLE DEPARTAMENTO (
+    DepartamentoID INT NOT NULL IDENTITY,
+    Nome VARCHAR(255) NOT NULL,
+    AndarID INT,
+    TelefoneID INT,
+    CONSTRAINT PK_Departamento PRIMARY KEY (DepartamentoID),
+    CONSTRAINT FK_Departamento_Andar FOREIGN KEY (AndarID) REFERENCES ANDARES (AndarID),
+    CONSTRAINT FK_Departamento_Telefone FOREIGN KEY (TelefoneID) REFERENCES TELEFONE (TelefoneID)
+);
+ 
+CREATE TABLE USUARIO (
+    UsuarioID INT NOT NULL IDENTITY,
+    Nome VARCHAR(255) NOT NULL,
+    DepartamentoID INT,
+    CONSTRAINT PK_Usuario PRIMARY KEY (UsuarioID),
+    CONSTRAINT FK_Usuario_Departamento FOREIGN KEY (DepartamentoID) REFERENCES DEPARTAMENTO (DepartamentoID)
+);
+ 
+CREATE TABLE USUARIO_RAMAL (
+    UsuarioID INT NOT NULL,
+    RamalID INT NOT NULL,
+    CONSTRAINT PK_UsuarioRamal PRIMARY KEY (UsuarioID, RamalID),
+    CONSTRAINT FK_UsuarioRamal_Usuario FOREIGN KEY (UsuarioID) REFERENCES USUARIO (UsuarioID),
+    CONSTRAINT FK_UsuarioRamal_Ramal FOREIGN KEY (RamalID) REFERENCES RAMAL (RamalID)
+);
